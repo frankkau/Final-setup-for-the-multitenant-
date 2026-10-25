@@ -1,0 +1,28 @@
+namespace CouncilRevenueCollection.Models.Dtos.Guardian;
+
+public class GuardianDto
+{
+    public Guid GuardianId { get; set; }
+
+
+    public string FullName =>
+        $"{FirstName} {LastName}";
+
+
+    public string FirstName { get; set; } = string.Empty;
+
+
+    public string LastName { get; set; } = string.Empty;
+
+
+    public string Relationship { get; set; } = string.Empty;
+
+
+    public string Phone { get; set; } = string.Empty;
+
+
+    public string Email { get; set; } = string.Empty;
+
+
+    public bool Status { get; set; }
+}

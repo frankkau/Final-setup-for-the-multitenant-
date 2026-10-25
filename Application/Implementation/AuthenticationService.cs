@@ -2,6 +2,7 @@
 using CouncilRevenueCollection.Models.Dtos;
 using CouncilRevenueCollection.Models.Entity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,8 @@ public class AuthenticationService : IAuthenticationService
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ILogger<AuthenticationService> _logger;
     private readonly IRefreshTokenService _refreshTokenService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
 
     public AuthenticationService(
         UserManager<User> userManager,
@@ -23,6 +26,7 @@ public class AuthenticationService : IAuthenticationService
         ITenantService tenantService,
         IJwtTokenService jwtTokenService,
         ILogger<AuthenticationService> logger,
+        IHttpContextAccessor httpContextAccessor,   
         IRefreshTokenService refreshTokenService)
     {
         _userManager = userManager;
@@ -30,75 +34,162 @@ public class AuthenticationService : IAuthenticationService
         _tenantService = tenantService;
         _jwtTokenService = jwtTokenService;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
         _refreshTokenService = refreshTokenService;
     }
 
-    public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
+    public async Task<LoginResponseDto> LoginAsync(
+    LoginRequestDto dto)
+{
+    // -----------------------------------------------------
+    // 1. Resolve tenant
+    // -----------------------------------------------------
+
+    var tenantId =
+        _tenantService.GetCurrentTenantId();
+
+    if (string.IsNullOrWhiteSpace(tenantId))
     {
-        var tenantId = _tenantService.GetCurrentTenantId();
+        throw new UnauthorizedAccessException(
+            "Tenant could not be resolved.");
+    }
 
-        if (string.IsNullOrWhiteSpace(tenantId))
-            throw new UnauthorizedAccessException("Tenant could not be resolved.");
+    tenantId = tenantId.Trim().ToLowerInvariant();
 
-        var email = dto.Email.Trim().ToUpperInvariant();
 
-        var user = await _userManager.Users
-            .FirstOrDefaultAsync(x =>
+    // -----------------------------------------------------
+    // 2. Normalize email
+    // -----------------------------------------------------
+
+    var email =
+        dto.Email.Trim().ToUpperInvariant();
+
+
+    // -----------------------------------------------------
+    // 3. Find user inside current tenant
+    // -----------------------------------------------------
+
+    var user = await _userManager.Users
+        .IgnoreQueryFilters()
+        .FirstOrDefaultAsync(
+            x =>
                 x.TenantId == tenantId &&
                 x.NormalizedEmail == email);
 
-        // Never reveal whether the email exists
-        if (user == null)
-        {
-            _logger.LogWarning(
-                "Login failed. Unknown user. Tenant={TenantId}, Email={Email}",
-                tenantId,
-                dto.Email);
 
-            throw new UnauthorizedAccessException("Invalid email or password.");
-        }
+    if (user is null)
+    {
+        _logger.LogWarning(
+            "Login failed. Unknown user. Tenant={TenantId}, Email={Email}",
+            tenantId,
+            dto.Email);
 
-        if (!user.EmailConfirmed)
-            throw new UnauthorizedAccessException("Email has not been confirmed.");
+        throw new UnauthorizedAccessException(
+            "Invalid email or password.");
+    }
 
-        if (await _userManager.IsLockedOutAsync(user))
-            throw new UnauthorizedAccessException("Account is locked.");
 
-        var result = await _signInManager.CheckPasswordSignInAsync(
+    // -----------------------------------------------------
+    // 4. Check email confirmation
+    // -----------------------------------------------------
+
+    if (!user.EmailConfirmed)
+    {
+        throw new UnauthorizedAccessException(
+            "Email has not been confirmed.");
+    }
+
+
+    // -----------------------------------------------------
+    // 5. Check lockout
+    // -----------------------------------------------------
+
+    if (await _userManager.IsLockedOutAsync(user))
+    {
+        throw new UnauthorizedAccessException(
+            "Account is locked.");
+    }
+
+
+    // -----------------------------------------------------
+    // 6. Validate password
+    // -----------------------------------------------------
+
+    var passwordResult =
+        await _signInManager.CheckPasswordSignInAsync(
             user,
             dto.Password,
             lockoutOnFailure: true);
 
-        if (!result.Succeeded)
-        {
-            _logger.LogWarning(
-                "Invalid password for user {UserId}",
-                user.Id);
 
-            throw new UnauthorizedAccessException("Invalid email or password.");
-        }
+    if (!passwordResult.Succeeded)
+    {
+        _logger.LogWarning(
+            "Invalid password for User={UserId}, Tenant={TenantId}",
+            user.Id,
+            tenantId);
 
-       var response = await _jwtTokenService.GenerateTokenAsync(user);
-
-            var ipAddress =
-                _signInManager.Context?.Connection?.RemoteIpAddress?.ToString()
-                ?? "Unknown";
-
-            // Read the JWT to obtain the JTI
-            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(response.AccessToken);
-
-            response.RefreshToken = await _refreshTokenService.CreateAsync(
-                user,
-                jwt.Id,
-                ipAddress);
-
-            _logger.LogInformation(
-                "User {UserId} logged in successfully.",
-                user.Id);
-
-            return response;
+        throw new UnauthorizedAccessException(
+            "Invalid email or password.");
     }
+
+
+    // -----------------------------------------------------
+    // 7. Generate JWT
+    // -----------------------------------------------------
+
+    var response =
+        await _jwtTokenService.GenerateTokenAsync(
+            user);
+
+
+    // -----------------------------------------------------
+    // 8. Get JWT ID
+    // -----------------------------------------------------
+
+    var handler =
+        new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+
+    var jwt =
+        handler.ReadJwtToken(
+            response.AccessToken);
+
+
+    // -----------------------------------------------------
+    // 9. Get IP address
+    // -----------------------------------------------------
+
+    var ipAddress =
+        _httpContextAccessor.HttpContext?
+            .Connection
+            .RemoteIpAddress?
+            .ToString()
+        ?? "Unknown";
+
+
+    // -----------------------------------------------------
+    // 10. Create refresh token
+    // -----------------------------------------------------
+
+    response.RefreshToken =
+        await _refreshTokenService.CreateAsync(
+            user,
+            jwt.Id,
+            ipAddress);
+
+
+    // -----------------------------------------------------
+    // 11. Log successful login
+    // -----------------------------------------------------
+
+    _logger.LogInformation(
+        "User {UserId} logged in successfully for tenant {TenantId}.",
+        user.Id,
+        tenantId);
+
+
+    return response;
+}
 
     public async Task<LoginResponseDto> RefreshAsync(string refreshToken)
 {

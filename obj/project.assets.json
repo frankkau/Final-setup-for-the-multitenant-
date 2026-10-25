@@ -3298,11 +3298,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\FRANK\\Documents\\CouncilRevenueCollection\\CouncilRevenueCollection.csproj",
+      "projectUniqueName": "C:\\Users\\FRANK\\Documents\\final\\CouncilRevenueCollection\\CouncilRevenueCollection.csproj",
       "projectName": "CouncilRevenueCollection",
-      "projectPath": "C:\\Users\\FRANK\\Documents\\CouncilRevenueCollection\\CouncilRevenueCollection.csproj",
+      "projectPath": "C:\\Users\\FRANK\\Documents\\final\\CouncilRevenueCollection\\CouncilRevenueCollection.csproj",
       "packagesPath": "C:\\Users\\FRANK\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\FRANK\\Documents\\CouncilRevenueCollection\\obj\\",
+      "outputPath": "C:\\Users\\FRANK\\Documents\\final\\CouncilRevenueCollection\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

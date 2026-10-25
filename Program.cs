@@ -4,7 +4,9 @@ using CouncilRevenueCollection.Application;
 using CouncilRevenueCollection.Application.Identity;
 using CouncilRevenueCollection.Application.Implementation;
 using CouncilRevenueCollection.Application.InterfaceClass;
+using CouncilRevenueCollection.Application.Interfaces;
 using CouncilRevenueCollection.Application.Service;
+using CouncilRevenueCollection.Infrastructure.Services;
 using CouncilRevenueCollection.Models.Entity;
 using CouncilRevenueCollection.Seeding;
 using Microsoft.AspNetCore.Authentication;
@@ -68,6 +70,37 @@ builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+builder.Services.AddScoped<IAcademicStructureService, AcademicStructureService>();
+builder.Services.AddScoped<IFormGradeService, FormGradeService>();
+builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentEnrollmentService, StudentEnrollmentService>();
+builder.Services.AddScoped<IGuardianService, GuardianService>();
+builder.Services.AddScoped<IStudentGuardianService, StudentGuardianService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddScoped<IClassSubjectService, ClassSubjectService>();
+builder.Services.AddScoped<ITeacherSubjectService, TeacherSubjectService>();
+builder.Services.AddScoped<IExamService, ExamService>();
+builder.Services.AddScoped<IExamSubjectService, ExamSubjectService>();
+builder.Services.AddScoped<IStudentExamResultService, StudentExamResultService>();
+builder.Services.AddScoped<IStudentAttendanceService, StudentAttendanceService>();  
+builder.Services.AddScoped<IAttendanceSummaryService, AttendanceSummaryService>();
+builder.Services.AddScoped<IFeeStructureService, FeeStructureService>();
+builder.Services.AddScoped<IFeePaymentService, FeePaymentService>();  
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();  
+builder.Services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
+builder.Services.AddScoped<ISchoolExpenseService, SchoolExpenseService>();
+builder.Services.AddScoped<IExpenseReceiptService, ExpenseReceiptService>();
+builder.Services.AddScoped<ILibraryBookService, LibraryBookService>();
+builder.Services.AddScoped<ILibraryBookCopyService, LibraryBookCopyService>();
+builder.Services.AddScoped<ILibraryLoanService, LibraryLoanService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IRegistrarService, RegistrarService>();
+builder.Services.AddScoped<IAccountantService, AccountantService>();
+
+
 
 
 #endregion

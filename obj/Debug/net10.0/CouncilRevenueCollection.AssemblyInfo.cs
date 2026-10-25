@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CouncilRevenueCollection")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d26a8e1d79bc69cea30804eb233e84b1cf2f3ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f3bc156f5b6bc22c85166f14543b460c074e34c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CouncilRevenueCollection")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CouncilRevenueCollection")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

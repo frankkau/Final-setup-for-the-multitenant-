@@ -22,6 +22,189 @@ namespace CouncilRevenueCollection.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CouncilRevenueCollection.Domain.Entities.Student", b =>
+                {
+                    b.Property<Guid>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<Guid?>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StudentNo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("StudentId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Student_UserId");
+
+                    b.HasIndex("TenantId", "StudentNo")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Student_Tenant_StudentNo");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.AcademicStructure", b =>
+                {
+                    b.Property<Guid>("AcademicStructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("AcademicStructureId");
+
+                    b.HasIndex("TenantId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_AcademicStructure_Tenant_Name");
+
+                    b.HasIndex("TenantId", "Sequence")
+                        .IsUnique()
+                        .HasDatabaseName("IX_AcademicStructure_Tenant_Sequence");
+
+                    b.ToTable("AcademicStructures");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Accountant", b =>
+                {
+                    b.Property<Guid>("AccountantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmployeeNo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AccountantId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId", "DepartmentId")
+                        .HasDatabaseName("IX_Accountant_Tenant_Department");
+
+                    b.HasIndex("TenantId", "EmployeeNo")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Accountant_Tenant_EmployeeNo");
+
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Accountant_Tenant_User");
+
+                    b.ToTable("Accountants");
+                });
+
             modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -46,6 +229,10 @@ namespace CouncilRevenueCollection.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("RoleCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -61,6 +248,626 @@ namespace CouncilRevenueCollection.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Class", b =>
+                {
+                    b.Property<Guid>("ClassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicYearId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClassName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("ClassTeacherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FormGradeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ClassId");
+
+                    b.HasIndex("ClassTeacherId");
+
+                    b.HasIndex("FormGradeId");
+
+                    b.HasIndex("TenantId", "AcademicYearId", "ClassName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Class_Tenant_Year_Name");
+
+                    b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Department", b =>
+                {
+                    b.Property<Guid>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.HasIndex("TenantId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Department_Tenant_Name");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Exam", b =>
+                {
+                    b.Property<Guid>("ExamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicYearId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ExamId");
+
+                    b.HasIndex("TenantId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Exam_Tenant_Name");
+
+                    b.ToTable("Exams");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExamSubject", b =>
+                {
+                    b.Property<Guid>("ExamSubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateOnly>("ExamDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("ExamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("TotalMarks")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.HasKey("ExamSubjectId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TenantId", "ExamId", "ClassId", "SubjectId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ExamSubject_Tenant_Exam_Class_Subject");
+
+                    b.ToTable("ExamSubjects");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExpenseCategory", b =>
+                {
+                    b.Property<Guid>("ExpenseCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ExpenseCategoryId");
+
+                    b.HasIndex("TenantId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ExpenseCategory_Tenant_Name");
+
+                    b.ToTable("ExpenseCategories");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExpenseReceipt", b =>
+                {
+                    b.Property<Guid>("ExpenseReceiptId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal?>("ReceiptAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("ReceiptDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("SchoolExpenseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("StoragePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("StoredFileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UploadedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExpenseReceiptId");
+
+                    b.HasIndex("SchoolExpenseId");
+
+                    b.HasIndex("TenantId", "FileHash")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ExpenseReceipt_Tenant_FileHash");
+
+                    b.ToTable("ExpenseReceipts");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.FeePayment", b =>
+                {
+                    b.Property<Guid>("FeePaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("FeeStructureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("PaymentDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ReferenceNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("FeePaymentId");
+
+                    b.HasIndex("FeeStructureId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "ReferenceNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_FeePayment_Tenant_Reference")
+                        .HasFilter("\"ReferenceNumber\" IS NOT NULL");
+
+                    b.ToTable("FeePayments");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.FeeStructure", b =>
+                {
+                    b.Property<Guid>("FeeStructureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("FeeStructureId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("TenantId", "ClassId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_FeeStructure_Tenant_Class_Name");
+
+                    b.ToTable("FeeStructures");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Invoice", b =>
+                {
+                    b.Property<Guid>("InvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly?>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("FeeStructureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("InvoiceDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("InvoiceId");
+
+                    b.HasIndex("FeeStructureId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "FeeStructureId")
+                        .HasDatabaseName("IX_Invoice_Tenant_FeeStructure");
+
+                    b.HasIndex("TenantId", "InvoiceNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Invoice_Tenant_InvoiceNumber");
+
+                    b.HasIndex("TenantId", "StudentId")
+                        .HasDatabaseName("IX_Invoice_Tenant_Student");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBook", b =>
+                {
+                    b.Property<Guid>("LibraryBookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Edition")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PublicationYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("LibraryBookId");
+
+                    b.HasIndex("TenantId", "ISBN")
+                        .IsUnique()
+                        .HasDatabaseName("IX_LibraryBook_Tenant_ISBN");
+
+                    b.ToTable("LibraryBooks");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBookCopy", b =>
+                {
+                    b.Property<Guid>("LibraryBookCopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccessionNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LibraryBookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ShelfLocation")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("LibraryBookCopyId");
+
+                    b.HasIndex("LibraryBookId");
+
+                    b.HasIndex("TenantId", "AccessionNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_LibraryBookCopy_Tenant_Accession");
+
+                    b.ToTable("LibraryBookCopies");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryLoan", b =>
+                {
+                    b.Property<Guid>("LibraryLoanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("BorrowedDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("FineAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LibraryBookCopyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateOnly?>("ReturnedDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("LibraryLoanId");
+
+                    b.HasIndex("LibraryBookCopyId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "LibraryBookCopyId")
+                        .HasDatabaseName("IX_LibraryLoan_Tenant_Copy");
+
+                    b.HasIndex("TenantId", "StudentId")
+                        .HasDatabaseName("IX_LibraryLoan_Tenant_Student");
+
+                    b.ToTable("LibraryLoans");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Notification", b =>
+                {
+                    b.Property<Guid>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("NotificationType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("ReadAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReferenceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TenantId", "UserId", "CreatedAtUtc")
+                        .HasDatabaseName("IX_Notification_Tenant_User_Created");
+
+                    b.HasIndex("TenantId", "UserId", "IsRead")
+                        .HasDatabaseName("IX_Notification_Tenant_User_Read");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.RefreshToken", b =>
@@ -133,6 +940,474 @@ namespace CouncilRevenueCollection.Data.Migrations
                         {
                             t.HasCheckConstraint("CK_RefreshToken_Expiry", "[ExpiresAt] > [CreatedAt]");
                         });
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Registrar", b =>
+                {
+                    b.Property<Guid>("RegistrarId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmployeeNo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RegistrarId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId", "DepartmentId")
+                        .HasDatabaseName("IX_Registrar_Tenant_Department");
+
+                    b.HasIndex("TenantId", "Email")
+                        .HasDatabaseName("IX_Registrar_Tenant_Email");
+
+                    b.HasIndex("TenantId", "EmployeeNo")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Registrar_Tenant_EmployeeNo");
+
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Registrar_Tenant_User");
+
+                    b.ToTable("Registrars");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.SchoolExpense", b =>
+                {
+                    b.Property<Guid>("SchoolExpenseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicYearId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("ExpenseCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("ExpenseDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ExpenseNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Payee")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ReferenceNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("TermId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SchoolExpenseId");
+
+                    b.HasIndex("ExpenseCategoryId");
+
+                    b.HasIndex("TenantId", "ExpenseDate")
+                        .HasDatabaseName("IX_SchoolExpense_Tenant_ExpenseDate");
+
+                    b.HasIndex("TenantId", "ExpenseNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_SchoolExpense_Tenant_ExpenseNumber");
+
+                    b.HasIndex("TenantId", "AcademicYearId", "TermId")
+                        .HasDatabaseName("IX_SchoolExpense_Tenant_Year_Term");
+
+                    b.ToTable("SchoolExpenses");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentAttendance", b =>
+                {
+                    b.Property<Guid>("StudentAttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicYearId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("AttendanceDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StudentEnrollmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("StudentAttendanceId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("StudentEnrollmentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "StudentEnrollmentId", "AttendanceDate")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Attendance_Enrollment_Date");
+
+                    b.ToTable("StudentAttendances");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentEnrollment", b =>
+                {
+                    b.Property<Guid>("StudentEnrollmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicYearId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("EnrollmentDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("StudentEnrollmentId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("StudentId", "AcademicYearId")
+                        .IsUnique();
+
+                    b.ToTable("StudentEnrollments");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentExamResult", b =>
+                {
+                    b.Property<Guid>("StudentExamResultId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ExamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ExamSubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal?>("GradePoint")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MarksObtained")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("StudentExamResultId");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("ExamSubjectId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "StudentId", "ExamId", "ExamSubjectId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_StudentExamResult_Tenant_Student_Exam_Subject");
+
+                    b.ToTable("StudentExamResults");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentGuardian", b =>
+                {
+                    b.Property<Guid>("StudentGuardianId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CanPickup")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("GuardianId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("StudentGuardianId");
+
+                    b.HasIndex("GuardianId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TenantId", "GuardianId");
+
+                    b.HasIndex("TenantId", "StudentId");
+
+                    b.HasIndex("TenantId", "StudentId", "GuardianId")
+                        .IsUnique();
+
+                    b.ToTable("StudentGuardians");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Teacher", b =>
+                {
+                    b.Property<Guid>("TeacherId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmployeeNo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Qualification")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TeacherId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Teacher_UserId");
+
+                    b.HasIndex("TenantId", "DepartmentId")
+                        .HasDatabaseName("IX_Teacher_Tenant_Department");
+
+                    b.HasIndex("TenantId", "EmployeeNo")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Teacher_Tenant_EmployeeNo");
+
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.TeacherSubject", b =>
+                {
+                    b.Property<Guid>("TeacherSubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("TeacherSubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TenantId", "TeacherId", "SubjectId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_TeacherSubject_Tenant_Teacher_Subject");
+
+                    b.ToTable("TeacherSubjects");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Timetable", b =>
+                {
+                    b.Property<Guid>("TimetableId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassSubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoomNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("TimetableId");
+
+                    b.HasIndex("ClassSubjectId");
+
+                    b.HasIndex("TenantId", "ClassSubjectId", "DayOfWeek", "StartTime", "EndTime")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Timetable_Tenant_ClassSubject_Day_Time");
+
+                    b.ToTable("Timetables");
                 });
 
             modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.User", b =>
@@ -222,10 +1497,71 @@ namespace CouncilRevenueCollection.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Guardian", b =>
+                {
+                    b.Property<Guid>("GuardianId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Relationship")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GuardianId");
+
+                    b.HasIndex("TenantId", "Email")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Guardian_Tenant_Email")
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("TenantId", "Phone")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Guardian_Tenant_Phone");
+
+                    b.HasIndex("TenantId", "LastName", "FirstName")
+                        .HasDatabaseName("IX_Guardian_Tenant_Name");
+
+                    b.ToTable("Guardians");
+                });
+
             modelBuilder.Entity("CouncilRevenueCollection.Tenant", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CustomDomain")
                         .HasColumnType("nvarchar(450)");
@@ -235,11 +1571,13 @@ namespace CouncilRevenueCollection.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Subdomain")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -362,6 +1700,479 @@ namespace CouncilRevenueCollection.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.ClassSubject", b =>
+                {
+                    b.Property<Guid>("ClassSubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOptional")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PeriodsPerWeek")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ClassSubjectId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TenantId", "ClassId")
+                        .HasDatabaseName("IX_ClassSubject_Tenant_Class");
+
+                    b.HasIndex("TenantId", "SubjectId")
+                        .HasDatabaseName("IX_ClassSubject_Tenant_Subject");
+
+                    b.HasIndex("TenantId", "ClassId", "SubjectId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ClassSubject_Tenant_Class_Subject");
+
+                    b.ToTable("ClassSubjects");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.FormGrade", b =>
+                {
+                    b.Property<Guid>("FormGradeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AcademicStructureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxAge")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinAge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("FormGradeId");
+
+                    b.HasIndex("AcademicStructureId");
+
+                    b.HasIndex("TenantId", "AcademicStructureId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_FormGrade_Tenant_Structure_Name");
+
+                    b.HasIndex("TenantId", "AcademicStructureId", "Sequence")
+                        .IsUnique()
+                        .HasDatabaseName("IX_FormGrade_Tenant_Structure_Sequence");
+
+                    b.ToTable("FormGrades");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.Subject", b =>
+                {
+                    b.Property<Guid>("SubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCompulsory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SubjectCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("SubjectName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("SubjectId");
+
+                    b.HasIndex("TenantId", "SubjectCode")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Subject_Tenant_Code");
+
+                    b.HasIndex("TenantId", "SubjectName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Subject_Tenant_Name");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Domain.Entities.Student", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", null)
+                        .WithMany("Students")
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("Students")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CouncilRevenueCollection.Domain.Entities.Student", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.AcademicStructure", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("AcademicStructures")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Accountant", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CouncilRevenueCollection.Models.Entity.Accountant", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Class", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Teacher", "ClassTeacher")
+                        .WithMany("Classes")
+                        .HasForeignKey("ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolManagement.Domain.Entities.FormGrade", "FormGrade")
+                        .WithMany("Classes")
+                        .HasForeignKey("FormGradeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("Classes")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassTeacher");
+
+                    b.Navigation("FormGrade");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Department", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Exam", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExamSubject", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Exam", "Exam")
+                        .WithMany("ExamSubjects")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolManagement.Domain.Entities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExpenseCategory", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExpenseReceipt", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.SchoolExpense", "SchoolExpense")
+                        .WithMany("Receipts")
+                        .HasForeignKey("SchoolExpenseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SchoolExpense");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.FeePayment", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.FeeStructure", "FeeStructure")
+                        .WithMany("FeePayments")
+                        .HasForeignKey("FeeStructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Invoice", "Invoice")
+                        .WithMany("Payments")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FeeStructure");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.FeeStructure", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Invoice", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.FeeStructure", "FeeStructure")
+                        .WithMany()
+                        .HasForeignKey("FeeStructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FeeStructure");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBook", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBookCopy", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.LibraryBook", "LibraryBook")
+                        .WithMany("Copies")
+                        .HasForeignKey("LibraryBookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LibraryBook");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryLoan", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.LibraryBookCopy", "LibraryBookCopy")
+                        .WithMany("Loans")
+                        .HasForeignKey("LibraryBookCopyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LibraryBookCopy");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Notification", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("Notifications")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.RefreshToken", b =>
                 {
                     b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
@@ -371,6 +2182,258 @@ namespace CouncilRevenueCollection.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Registrar", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CouncilRevenueCollection.Models.Entity.Registrar", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.SchoolExpense", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.ExpenseCategory", "ExpenseCategory")
+                        .WithMany("SchoolExpenses")
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseCategory");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentAttendance", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.StudentEnrollment", "StudentEnrollment")
+                        .WithMany("Attendances")
+                        .HasForeignKey("StudentEnrollmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("StudentEnrollment");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentEnrollment", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", "Class")
+                        .WithMany("StudentEnrollments")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("StudentEnrollments")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentExamResult", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Exam", "Exam")
+                        .WithMany("StudentExamResults")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.ExamSubject", "ExamSubject")
+                        .WithMany("StudentExamResults")
+                        .HasForeignKey("ExamSubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("ExamSubject");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentGuardian", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Guardian", "Guardian")
+                        .WithMany("StudentGuardians")
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Domain.Entities.Student", "Student")
+                        .WithMany("StudentGuardians")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Guardian");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Teacher", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Department", "Department")
+                        .WithMany("Teachers")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("Teachers")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CouncilRevenueCollection.Models.Entity.Teacher", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.TeacherSubject", b =>
+                {
+                    b.HasOne("SchoolManagement.Domain.Entities.Subject", "Subject")
+                        .WithMany("TeacherSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Teacher", "Teacher")
+                        .WithMany("TeacherSubjects")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Timetable", b =>
+                {
+                    b.HasOne("SchoolManagement.Domain.Entities.ClassSubject", "ClassSubject")
+                        .WithMany("Timetables")
+                        .HasForeignKey("ClassSubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassSubject");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Guardian", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -424,9 +2487,198 @@ namespace CouncilRevenueCollection.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.ClassSubject", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Class", "Class")
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolManagement.Domain.Entities.Subject", "Subject")
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.Teacher", "Teacher")
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("ClassSubjects")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.FormGrade", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Models.Entity.AcademicStructure", "AcademicStructure")
+                        .WithMany("FormGrades")
+                        .HasForeignKey("AcademicStructureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CouncilRevenueCollection.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AcademicStructure");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.Subject", b =>
+                {
+                    b.HasOne("CouncilRevenueCollection.Tenant", "Tenant")
+                        .WithMany("Subjects")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("ExamResults");
+
+                    b.Navigation("StudentGuardians");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.AcademicStructure", b =>
+                {
+                    b.Navigation("FormGrades");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Class", b =>
+                {
+                    b.Navigation("ClassSubjects");
+
+                    b.Navigation("StudentEnrollments");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Department", b =>
+                {
+                    b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Exam", b =>
+                {
+                    b.Navigation("ExamSubjects");
+
+                    b.Navigation("StudentExamResults");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExamSubject", b =>
+                {
+                    b.Navigation("StudentExamResults");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.ExpenseCategory", b =>
+                {
+                    b.Navigation("SchoolExpenses");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.FeeStructure", b =>
+                {
+                    b.Navigation("FeePayments");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Invoice", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBook", b =>
+                {
+                    b.Navigation("Copies");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.LibraryBookCopy", b =>
+                {
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.SchoolExpense", b =>
+                {
+                    b.Navigation("Receipts");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.StudentEnrollment", b =>
+                {
+                    b.Navigation("Attendances");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.Teacher", b =>
+                {
+                    b.Navigation("ClassSubjects");
+
+                    b.Navigation("Classes");
+
+                    b.Navigation("TeacherSubjects");
+                });
+
             modelBuilder.Entity("CouncilRevenueCollection.Models.Entity.User", b =>
                 {
+                    b.Navigation("Notifications");
+
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Models.Guardian", b =>
+                {
+                    b.Navigation("StudentGuardians");
+                });
+
+            modelBuilder.Entity("CouncilRevenueCollection.Tenant", b =>
+                {
+                    b.Navigation("AcademicStructures");
+
+                    b.Navigation("ClassSubjects");
+
+                    b.Navigation("Classes");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("StudentEnrollments");
+
+                    b.Navigation("Students");
+
+                    b.Navigation("Subjects");
+
+                    b.Navigation("Teachers");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.ClassSubject", b =>
+                {
+                    b.Navigation("Timetables");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.FormGrade", b =>
+                {
+                    b.Navigation("Classes");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Domain.Entities.Subject", b =>
+                {
+                    b.Navigation("ClassSubjects");
+
+                    b.Navigation("TeacherSubjects");
                 });
 #pragma warning restore 612, 618
         }

@@ -64,16 +64,23 @@ public class RoleManagementService : IRoleManagementService
     if (exists)
         throw new Exception($"Role '{roleName}' already exists.");
 
+   var identityRoleName = $"{tenantId}:{roleName}";
+
     var role = new ApplicationRole
     {
         Id = Guid.NewGuid().ToString(),
-        Name = roleName,
-        NormalizedName = normalizedName,
 
         TenantId = tenantId,
 
-        Description = dto.Description ?? string.Empty,
-        IsSystemRole = false,
+        Name = identityRoleName,
+
+        NormalizedName = identityRoleName.ToUpperInvariant(),
+
+        RoleCode = roleName,
+
+        Description = roleName,
+
+        IsSystemRole = true,
 
         ConcurrencyStamp = Guid.NewGuid().ToString()
     };

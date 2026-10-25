@@ -60,4 +60,16 @@ public class TenantManagementController : ControllerBase
 
         return NoContent();
     }
+
+     [HttpGet("{tenantId}/users")]
+    public async Task<ActionResult<IReadOnlyList<UserResponseDto>>> GetUsers(
+        string tenantId,
+        CancellationToken cancellationToken)
+    {
+        var users = await _service.GetUsersByTenantAsync(
+            tenantId,
+            cancellationToken);
+
+        return Ok(users);
+    }
 }
